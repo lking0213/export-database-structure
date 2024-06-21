@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.DocxRenderData;
@@ -188,7 +186,7 @@ public class App
      */
     private static List<RowRenderData> getRowRenderData(ResultSet set) {
     	List<RowRenderData> result = new ArrayList<>();
-    	
+
     	try {
     		int i = 0;
 			while(set.next()){
@@ -213,7 +211,9 @@ public class App
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-  
+
+    	result = result.stream().sorted(Comparator.comparing(o -> Integer.valueOf(o.getRowData().get(0).getText()))).collect(Collectors.toList());
+
 		return result;
 	}
 
